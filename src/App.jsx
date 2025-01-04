@@ -1,9 +1,13 @@
-function App() {
+import AddImage from "./Components/AddImage";
+
+const App = () => {
   return (
-    <>
-      <div>Project Setup...</div>
-    </>
+    <div>
+      <AddImage/>
+    </div>
   );
-}
+};
 
 export default App;
+
+
