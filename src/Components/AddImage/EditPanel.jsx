@@ -1,10 +1,11 @@
+import React from "react";
 import EditIcon from "@mui/icons-material/Edit";
-import { Box } from "@mui/material";
-
 import CloseIcon from "@mui/icons-material/Close";
 import CropIcon from "@mui/icons-material/Crop";
+import RotateRightIcon from "@mui/icons-material/RotateRight"; // Import the rotate icon
+import { Box } from "@mui/material";
 
-const EditPanel = ({ handleCrop, togglePanel, isOpen }) => {
+const EditPanel = ({ handleCrop, togglePanel, isOpen, handleRotate }) => {
   return (
     <Box
       sx={{
@@ -29,6 +30,11 @@ const EditPanel = ({ handleCrop, togglePanel, isOpen }) => {
             <CropIcon
               sx={{ color: "white", paddingY: 1, cursor: "pointer" }}
               onClick={() => handleCrop()}
+            />
+            {/* Rotate Button */}
+            <RotateRightIcon
+              sx={{ color: "white", paddingY: 1, cursor: "pointer" }}
+              onClick={() => handleRotate()} // Trigger rotation on click
             />
           </Box>
         ) : (

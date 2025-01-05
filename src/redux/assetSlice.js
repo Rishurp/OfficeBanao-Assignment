@@ -3,23 +3,23 @@ import { createSlice } from "@reduxjs/toolkit";
 const assetSlice = createSlice({
   name: "assets",
   initialState: {
-    croppedImages: [],
-    lastCroppedImage: null,
+    lastEditedImage: null,
+    images: [],
   },
   reducers: {
-    addCroppedImage: (state) => {
-      if (!state.lastCroppedImage) {
-        throw new Error("Invalid call. lastCroppedImage must not be null");
+    addEditedImage: (state) => {
+      if (!state.lastEditedImage) {
+        throw new Error("Invalid call. lastEditedImage must not be null");
       }
-      state.croppedImages.push(state.lastCroppedImage);
-      state.lastCroppedImage = null;
+      state.images.push(state.lastEditedImage);
+      state.lastEditedImage = null;
     },
-    updateLastCroppedImage: (state, action) => {
+    updateLastEditedImage: (state, action) => {
       const image = action.payload;
-      state.lastCroppedImage = image;
+      state.lastEditedImage = image;
     },
   },
 });
 
-export const { addCroppedImage, updateLastCroppedImage } = assetSlice.actions;
+export const { addEditedImage, updateLastEditedImage } = assetSlice.actions;
 export default assetSlice.reducer;

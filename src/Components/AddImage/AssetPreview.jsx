@@ -1,11 +1,12 @@
+import React, { useState } from "react";
 import { Box, Typography } from "@mui/material";
 import EditPanel from "./EditPanel";
-import { useState } from "react";
 import AssetCropper from "./AssetCropper";
 
 const AssetPreview = ({ selectedImage }) => {
   const [isOpen, setPanel] = useState(false);
   const [showCropper, setShowCropper] = useState(false);
+  const [rotation, setRotation] = useState(0); 
 
   const togglePanel = () => {
     setPanel(!isOpen);
@@ -14,6 +15,11 @@ const AssetPreview = ({ selectedImage }) => {
 
   const handleCropIconClick = () => {
     setShowCropper(!showCropper);
+  };
+
+  
+  const handleRotate = () => {
+    setRotation((prevRotation) => (prevRotation + 90) % 360); 
   };
 
   return (
@@ -31,13 +37,14 @@ const AssetPreview = ({ selectedImage }) => {
           handleCrop={handleCropIconClick}
           togglePanel={togglePanel}
           isOpen={isOpen}
+          handleRotate={handleRotate} 
         />
       </Box>
       {selectedImage ? (
         <Box>
           {showCropper ? (
             <Box>
-              <AssetCropper src={selectedImage} />
+              <AssetCropper src={selectedImage} rotation={rotation} />
             </Box>
           ) : (
             <Box
@@ -51,6 +58,7 @@ const AssetPreview = ({ selectedImage }) => {
                 mb: 2,
                 boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
                 objectFit: "contain",
+                transform: `rotate(${rotation}deg)`, 
               }}
             />
           )}

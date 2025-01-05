@@ -2,22 +2,19 @@ import ReactCrop from "react-image-crop";
 import { useState, useRef } from "react";
 import "react-image-crop/dist/ReactCrop.css";
 import { useDispatch } from "react-redux";
-import {
-  addCroppedImage,
-  updateLastCroppedImage,
-} from "../../redux/assetSlice";
+import { updateLastEditedImage } from "../../redux/assetSlice";
 
-const AssetCropper = ({ src }) => {
+const AssetCropper = ({ src, rotation }) => {
   const [crop, setCrop] = useState({
-    unit: "%", 
+    unit: "%",
     x: 25,
     y: 25,
     width: 50,
     height: 50,
   });
-  const [completedCrop, setCompletedCrop] = useState(null); 
-  const imageRef = useRef(null); 
-  const dispatch = useDispatch(); 
+  const [completedCrop, setCompletedCrop] = useState(null);
+  const imageRef = useRef(null);
+  const dispatch = useDispatch();
 
   const getCroppedImage = (crop) => {
     if (!imageRef.current || !crop || !crop.width || !crop.height) {
@@ -33,6 +30,11 @@ const AssetCropper = ({ src }) => {
 
     const ctx = canvas.getContext("2d");
 
+    ctx.save();
+    ctx.translate(crop.width / 2, crop.height / 2);
+    ctx.rotate((rotation * Math.PI) / 180);
+    ctx.translate(-crop.width / 2, -crop.height / 2);
+
     ctx.drawImage(
       imageRef.current,
       crop.x * scaleX,
@@ -45,6 +47,8 @@ const AssetCropper = ({ src }) => {
       crop.height
     );
 
+    ctx.restore();
+
     return new Promise((resolve) => {
       canvas.toBlob((blob) => {
         if (blob) {
@@ -54,7 +58,6 @@ const AssetCropper = ({ src }) => {
     });
   };
 
-  
   const handleCropComplete = async (crop) => {
     setCompletedCrop(crop);
 
@@ -62,7 +65,7 @@ const AssetCropper = ({ src }) => {
       const croppedBlob = await getCroppedImage(crop);
       if (croppedBlob) {
         const croppedUrl = URL.createObjectURL(croppedBlob);
-        dispatch(updateLastCroppedImage(croppedUrl));
+        dispatch(updateLastEditedImage(croppedUrl));
       }
     }
   };
@@ -71,14 +74,20 @@ const AssetCropper = ({ src }) => {
     <div>
       <ReactCrop
         crop={crop}
-        onChange={(newCrop) => setCrop(newCrop)} 
-        onComplete={handleCropComplete} 
+        onChange={(newCrop) => setCrop(newCrop)}
+        onComplete={handleCropComplete}
+        rotation={rotation}
       >
         <img
           ref={imageRef}
           src={src}
           alt="To crop"
-          style={{ objectFit: "contain", width: "85%", height: "100%" }}
+          style={{
+            objectFit: "contain",
+            width: "85%",
+            height: "100%",
+            transform: `rotate(${rotation}deg)`,
+          }}
         />
       </ReactCrop>
     </div>

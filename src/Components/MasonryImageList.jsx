@@ -11,9 +11,9 @@ import { useNavigate } from "react-router-dom";
 
 function MasonryImageList() {
   const navigate = useNavigate();
-  const croppedImages = useSelector((state) => state.assets.croppedImages);
+  const assetImages = useSelector((state) => state.assets.images);
 
-  console.log(croppedImages);
+  console.log(assetImages);
 
   return (
     <Box sx={{ padding: 2 }}>
@@ -41,7 +41,11 @@ function MasonryImageList() {
           <Button
             onClick={() => navigate("/")}
             variant="contained"
-            color="primary"
+            sx={{
+              backgroundColor: "#2c3e50",
+              "&:hover": { backgroundColor: "#34495e" },
+              textTransform: "none",
+            }}
           >
             + Add
           </Button>
@@ -49,8 +53,8 @@ function MasonryImageList() {
       </Box>
 
       <ImageList variant="masonry" cols={3} gap={16}>
-        {croppedImages.length > 0 ? (
-          croppedImages.map((image, index) => (
+        {assetImages.length > 0 ? (
+          assetImages.map((image, index) => (
             <ImageListItem key={index}>
               <img
                 src={image}
@@ -64,7 +68,7 @@ function MasonryImageList() {
             </ImageListItem>
           ))
         ) : (
-          <Box>No cropped images available.</Box>
+          <Box>No images available.</Box>
         )}
       </ImageList>
     </Box>

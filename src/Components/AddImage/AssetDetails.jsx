@@ -3,24 +3,19 @@ import KeyboardArrowDownTwoToneIcon from "@mui/icons-material/KeyboardArrowDownT
 import UploadIcon from "@mui/icons-material/Upload";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { addCroppedImage } from "../../redux/assetSlice"; // Import the action
+import { addEditedImage } from "../../redux/assetSlice";
 
-const AssetDetails = () => {
+const AssetDetails = ({ src }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const lastCroppedImage = useSelector(
-    (state) => state.assets.lastCroppedImage
-  );
+  const lastEditedImage = useSelector((state) => state.assets.lastEditedImage);
 
   const handleUploadClick = () => {
-    if (lastCroppedImage) {
-      console.log("Uploading last cropped image:", lastCroppedImage);
-      dispatch(addCroppedImage());
-      navigate("/image-list"); 
-    } else {
-      alert("No images to upload. Please crop and add an image first.");
+    if (lastEditedImage) {
+      dispatch(addEditedImage());
     }
+    navigate("/image-list");
   };
 
   return (

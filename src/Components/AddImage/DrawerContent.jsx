@@ -35,7 +35,7 @@ const DrawerContent = ({ selectedImage, drawerOpen, toggleDrawer }) => {
         }}
       >
         <AssetPreview selectedImage={selectedImage} />
-        <AssetDetails />
+        <AssetDetails src={selectedImage} />
       </Box>
     </Drawer>
   );
